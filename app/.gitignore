@@ -25,4 +25,5 @@ alembic/
 alembic.ini
 
 
+./sql_app.db
 sql_app.db

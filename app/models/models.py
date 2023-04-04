@@ -1,10 +1,10 @@
 from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, Date, Enum
 from datetime import date, datetime
-from database.database import Base
-from enums.events import Event_type, Event_categories, Event_frequency
-from enums.users import Country, Acct_type
-from enums.tickets import Ticket_type, Ticket_stock
-from enums.ticket_transactions import Transaction_status
+from app.database.database import Base
+from app.enums.events import Event_type, Event_categories, Event_frequency
+from app.enums.users import Country, Acct_type
+from app.enums.tickets import Ticket_type, Ticket_stock
+from app.enums.ticket_transactions import Transaction_status
 
 
 class Event(Base):
