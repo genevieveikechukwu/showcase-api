@@ -1,10 +1,10 @@
 from pydantic import BaseModel,EmailStr
-from enums.users import Acct_type
+from app.enums.users import Acct_type
 from typing import Any, Optional
 import datetime
 
 class UserBase(BaseModel):
-    email: EmailStr
+    email: str
 
 
 

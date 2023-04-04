@@ -6,6 +6,18 @@ from app.database.database import get_db
 router = APIRouter()
 
 
-@router.get("/users")
-def users():
-    return {"message": "welcome"}
+@router.patch('/update')
+def update_email():
+    pass
+@router.patch('/update')
+def update_email():
+    pass
+@router.post('/billing/add')
+def update_email():
+    pass
+@router.delete('/delete')
+def update_email():
+    pass
+@router.get('/events')
+def update_email():
+    pass
