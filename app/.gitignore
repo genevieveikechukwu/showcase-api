@@ -18,5 +18,11 @@ Thumbs.db
 ./env
 .sql_app.db
 
+alembic/
+./alembic
+.alembic.ini/
+.alembic.ini
+alembic.ini
 
 
+sql_app.db
