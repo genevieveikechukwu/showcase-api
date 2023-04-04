@@ -1,6 +1,7 @@
 import uvicorn
 from fastapi import Depends, HTTPException, FastAPI
-from database.database import SessionLocal, engine, Base
+from database.database import SessionLocal, engine
+from models.models import Base
 from api.v1 import api_router
 
 Base.metadata.create_all(bind=engine)
