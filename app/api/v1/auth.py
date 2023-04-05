@@ -9,6 +9,8 @@ from sqlalchemy.orm import Session
 from app.models import models
 from app.schemas import users
 from app.database.database import get_db
+from app.schemas import users
+from app.crud import user_crud
 
 SECRET_KEY = "2bb80d537b1da3e38bd30361aa855686bde0eacd7162fef6a25fe97bf527a25b"
 ALGORITHM = "HS256"
@@ -20,6 +22,7 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     username: Union[str, None] = None
+
 
 router = APIRouter()
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -92,8 +95,8 @@ def get_current_active_user(current_user: users.User = Depends(get_current_user)
     return current_user
 
 
-@router.post("/auth", response_model=Token)
-async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+@router.post("/auth/login", response_model=Token)
+async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
 
     user = authenticate_user(db, form_data.username, form_data.password)
     if not user:
@@ -111,14 +114,12 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-@router.get("/users/profile")
-async def read_users_me(current_user: users.User = Depends(get_current_active_user)):
-    return current_user
+@router.post('/auth/signup')
+def create_user(user: users.IndividualCreate, db: Session = Depends(get_db)):
+    db_user = user_crud.get_user_by_email(db, email=user.email)
+    if db_user:
+        raise HTTPException(status_code=400, detail="Email already registered")
+    return user_crud.create_individual_user(db=db, user=user)
 
-@router.post('auth/signup')
-def register():
-    pass
 
-@router.post('auth/login')
-def login():
-    pass
+
