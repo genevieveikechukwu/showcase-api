@@ -2,6 +2,7 @@ from fastapi import FastAPI, Depends, APIRouter
 from sqlalchemy.orm import Session
 from app.database.database import get_db
 from app.schemas import users
+from typing import Optional
 from app.crud import user_crud
 from .auth  import get_current_active_user, get_current_user
 
@@ -16,7 +17,7 @@ async def user_profile(current_user: users.User = Depends(get_current_active_use
 
 
 @router.patch('/update/')
-def update_email(user: users.UpdateUser, q: str | None = None, current_user: users.User = Depends(get_current_user)):
+def update_email(user: users.UpdateUser, q: str,  current_user: users.User = Depends(get_current_user)):
     if q == current_user.email: 
         user_crud.update_user_email(db=get_db, user=user.email)
         return {"data": {user},
