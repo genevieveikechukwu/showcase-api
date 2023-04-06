@@ -27,6 +27,6 @@ class User(UserBase):
     class Config:
         orm_mode = True
 
-class UpdateUser(UserBase):
+class UpdateUser(BaseModel):
     email: str
     password: str

@@ -1,9 +1,11 @@
 from sqlalchemy.orm import Session
 from app.models import models
+from fastapi import Depends
 from app.schemas import users
 from app.schemas import payment_details
 from .hash import get_password_hash, verify_password, hash_token, decode_token
 from fastapi.encoders import jsonable_encoder
+from app.api.v1.auth import get_current_user
 
 def get_user(db: Session, user_id:int):
     return db.query(models.User).filter(models.User.id == user_id)
@@ -29,7 +31,8 @@ def create_business_user(db: Session, user: users.OrgarnizationCreate):
     db.refresh(db_user)
     return db_user
 
-def update_user_password(db: Session, user: users.UserBase):
+
+def update_user_password(user: users.UserBase, db: Session = Depends(get_current_user)):
     user = get_user_by_email(db, email=user.email)
     if user is None:
         return{"message": "user not found"}
@@ -82,4 +85,14 @@ def delete_users(db:Session, user_id:int):
     return user
 
 def get_event(db:Session, user_id:int):
+    """
+    get_event _summary_
+
+    Args:
+        db (Session): _description_
+        user_id (int): _description_
+
+    Returns:
+        _type_: Event
+    """
     return db.query(models.Event).filter(models.Event.user_id == user_id).all()

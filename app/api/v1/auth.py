@@ -89,10 +89,10 @@ async def get_current_user(db: Session = Depends(get_db), token: str = Depends(o
     return user
 
 
-def get_current_active_user(current_user: users.User = Depends(get_current_user)):
-    if not current_user.disabled:
-        raise HTTPException(status_code=400, detail="Inactive user")
-    return current_user
+# def get_current_active_user(current_user: users.User = Depends(get_current_user)):
+#     if not current_user.disabled:
+#         raise HTTPException(status_code=400, detail="Inactive user")
+#     return current_user
 
 
 @router.post("/auth/login", response_model=Token)
