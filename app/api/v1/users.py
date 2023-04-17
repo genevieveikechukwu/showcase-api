@@ -140,4 +140,14 @@ def delete_user(user_id: int, db: Session = Depends(get_current_user)):
 
 @router.get('/events')
 def get_events(user_id: int, db: Session=Depends(get_current_user)):
-    user_crud.get_event(db=db, user_id=user_id)
+    """
+    get_event _summary_
+
+    Args:
+        db (Session): _description_
+        user_id (int): _description_
+
+    Returns:
+        _type_: Event
+    """
+    return user_crud.get_event(db=db, user_id=user_id)

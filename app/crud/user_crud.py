@@ -85,14 +85,5 @@ def delete_users(db:Session, user_id:int):
     return user
 
 def get_event(db:Session, user_id:int):
-    """
-    get_event _summary_
 
-    Args:
-        db (Session): _description_
-        user_id (int): _description_
-
-    Returns:
-        _type_: Event
-    """
     return db.query(models.Event).filter(models.Event.user_id == user_id).all()

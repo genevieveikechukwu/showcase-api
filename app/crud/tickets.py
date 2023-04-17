@@ -41,8 +41,5 @@ def delete_event(db: Session, id: int):
         return ticket
 
 def create_payment_details(db: Session, details:payment_details.PaymentDetailBase):
-        token_hash = hash_token(token=details.token)
-        db_data = models.Payment_detail(token=token_hash)
-        db.add(db_data)
-        db.commit()
-        db.refresh(db_data)
+        token = decode_token(token=details.token)
+        return token

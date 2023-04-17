@@ -25,8 +25,9 @@ class TokenData(BaseModel):
 
 
 router = APIRouter()
+
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="v1/auth/login")
 
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
@@ -37,11 +38,8 @@ def get_password_hash(password):
 
 def get_user(db: Session, email: str):
     if email:
-      return db.query(models.User).filter(models.User.email == email).first()
-    else:
-        return{
-            "message": "user not found"
-        }
+      user = db.query(models.User).filter(models.User.email == email).first()
+      return user 
 
 
 def authenticate_user(db: Session, email: str, password: str): 
@@ -87,12 +85,13 @@ async def get_current_user(db: Session = Depends(get_db), token: str = Depends(o
     if user is None:
         raise credentials_exception
     return user
+  
 
 
-# def get_current_active_user(current_user: users.User = Depends(get_current_user)):
-#     if not current_user.disabled:
-#         raise HTTPException(status_code=400, detail="Inactive user")
-#     return current_user
+async def get_current_active_user(current_user: users.UserInDB = Depends(get_current_user)):
+    if  current_user.disabled:
+        raise HTTPException(status_code=400, detail="Inactive user")
+    return current_user
 
 
 @router.post("/auth/login", response_model=Token)
